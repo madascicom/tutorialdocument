@@ -10,7 +10,7 @@ def generate_response(uploaded_file, openai_api_key, query_text):
     if uploaded_file is not None:
         documents = [uploaded_file.read().decode()]
         # Split documents into chunks
-        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+        text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=10)
         texts = text_splitter.create_documents(documents)
         # Select embeddings
         embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
@@ -23,8 +23,8 @@ def generate_response(uploaded_file, openai_api_key, query_text):
         return qa.run(query_text)
 
 # Page title
-st.set_page_config(page_title='🦜🔗 Ask the Doc App')
-st.title('🦜🔗 Ask the Doc App')
+st.set_page_config(page_title='🦜🔗 Mada 3 Ask the Doc App')
+st.title('🦜🔗 Mada 3 Ask the Doc App')
 
 # File upload
 uploaded_file = st.file_uploader('Upload an article', type='txt')
