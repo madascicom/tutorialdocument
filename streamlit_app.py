@@ -16,7 +16,7 @@ def generate_response(uploaded_file, openai_api_key, query_text):
         embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         # Create a vectorstore from document
         docsearch = Chroma.from_documents(texts, embeddings)
-        qa = RetrievalQA.from_chain_type(llm=OpenAI(), chain_type="stuff", retriever=docsearch.as_retriever())
+        qa = RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key), chain_type="stuff", retriever=docsearch.as_retriever())
         return qa.run(query_text)
 
 # Page title
