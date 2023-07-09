@@ -5,12 +5,6 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 
-
-import os
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.langchain.plus"
-os.environ["LANGCHAIN_API_KEY"] = "LANGCHAIN_API_KEY"
-
 def generate_response(uploaded_file, openai_api_key, query_text):
     # Load document if file is uploaded
     if uploaded_file is not None:
@@ -23,7 +17,7 @@ def generate_response(uploaded_file, openai_api_key, query_text):
         # Create a vectorstore from documents
         db = Chroma.from_documents(texts, embeddings)
         # Create retriever interface
-        retriever = db.as_retriever()
+        retriever = db.as_retriever(search_kwargs={"k": 1})
         # Create QA chain
         qa = RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key), chain_type='stuff', retriever=retriever)
         return qa.run(query_text)
@@ -41,7 +35,6 @@ query_text = st.text_input('Enter your question:', placeholder = 'Please provide
 result = []
 with st.form('myform', clear_on_submit=True):
     openai_api_key = st.text_input('OpenAI API Key', type='password', disabled=not (uploaded_file and query_text))
-    LANGCHAIN_API_KEY = st.text_input('LANGCHAIN_API_KEY', type='password', disabled=not (uploaded_file and query_text))
     submitted = st.form_submit_button('Submit', disabled=not(uploaded_file and query_text))
     if submitted and openai_api_key.startswith('sk-'):
         with st.spinner('Calculating...'):
