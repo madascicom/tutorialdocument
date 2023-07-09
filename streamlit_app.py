@@ -6,9 +6,10 @@ from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 
 
-LANGCHAIN_TRACING_V2 = "true"
-LANGCHAIN_ENDPOINT = "https://api.langchain.plus"
-
+import os
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_ENDPOINT"] = "https://api.langchain.plus"
+os.environ["LANGCHAIN_API_KEY"] = "LANGCHAIN_API_KEY"
 
 def generate_response(uploaded_file, openai_api_key, query_text):
     # Load document if file is uploaded
