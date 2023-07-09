@@ -17,7 +17,7 @@ def generate_response(uploaded_file, openai_api_key, query_text):
         # Create a vectorstore from documents
         db = Chroma.from_documents(texts, embeddings)
         # Create retriever interface
-        retriever = db.as_retriever(search_kwargs={"k": 1})
+        retriever = db.as_retriever(search_kwargs={"k": 2})
         # Create QA chain
         qa = RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key), chain_type='stuff', retriever=retriever)
         return qa.run(query_text)
